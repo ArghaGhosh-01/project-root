@@ -5,7 +5,7 @@ const path = require("path");
 
 const app = express();
 
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("src/views"));
 
 app.get("/", (req, res) => {
@@ -14,7 +14,7 @@ app.get("/", (req, res) => {
 
 app.post("/submit", async (req, res) => {
   try {
-    const response = await axios.post("http://backend:5000/process", req.body);
+    const response = await axios.post("http://localhost:6000/process", req.body);
     res.send(`<h2>Backend Response:</h2><p>${response.data.message}</p>`);
   } catch (error) {
     res.send("Error connecting to Flask backend");
