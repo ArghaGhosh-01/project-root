@@ -1,0 +1,71 @@
+# ================= BACKEND DEPLOYMENT =================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  namespace: project-root
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: docker.io/arghaghosh01/project-root-backend:latest
+          ports:
+            - containerPort: 6000
+---
+# ================= BACKEND SERVICE =================
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+  namespace: project-root
+spec:
+  selector:
+    app: backend
+  ports:
+    - port: 6000
+      targetPort: 6000
+  type: ClusterIP
+---
+# ================= FRONTEND DEPLOYMENT =================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+  namespace: project-root
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - name: frontend
+          image: docker.io/arghaghosh01/project-root-frontend:latest
+          ports:
+            - containerPort: 3000
+---
+# ================= FRONTEND SERVICE =================
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+  namespace: project-root
+spec:
+  selector:
+    app: frontend
+  ports:
+    - port: 3000
+      targetPort: 3000
+  type: NodePort
